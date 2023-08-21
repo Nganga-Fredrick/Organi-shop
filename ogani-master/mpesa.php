@@ -91,7 +91,7 @@ include __DIR__ . './config/config.php';
             }
         } elseif (isset($ResponseCode->ResponseCode)) {
             if ($ResponseCode->ResponseCode == "0") {
-
+$receipt = $ResponseCode->CheckoutRequestID;
                 $alert_success[] = "Success. Request accepted for processing";
 
             // Get the values from PHP variables
@@ -104,8 +104,8 @@ $description = 'topup';
 $phoneNumber = $phone; // Assuming $phone variable already contains the phone number
 $status = 'complete';
 
-// Create the full SQL INSERT query
-$sql = "INSERT INTO orders (created_at, order_total, order_notes,) values( now(), $money, 'order', $phoneNumber  )";
+$sql = "INSERT INTO orders (created_at, order_total, order_notes, phone) VALUES (NOW(), $money, '$receipt', $phoneNumber)";
+
 
 if ($conn->query($sql) === TRUE) {
     echo "Record inserted successfully!";
@@ -245,18 +245,27 @@ if (isset($alert_success)) {
                 <p class="top mb-6">Amount to TopUP</p>
                 <div class="d-flex flex-row justify-content-between text-align-center xyz mb-3">
                     <h2><i class="fas fa-ksh mb-3"></i><span></span></h2>
-                    <div class="discount"><span>2% extra</span></div>
+                    <div class="discount"><span>2% off</span></div>
                 </div>
-                <div class="card-content mt-4 mb-4">
+                <div class="mt-0 text-white">
+                    your ticket is : 
+                    <?php
+                    if (isset($receipt)){
+                        echo $receipt;
+                    }
+
+                    ?>
+                </div>
+                <div class="card-content mt-1 mb-2">
                     <p>Once you complete the payment, you can order any meal.</p>
                 </div>
-                <div class="mt-2 btn-primary">
+                <div class="mt-0 btn-primary">
                     <input type="text" name="price" placeholder="Amount" required>
                 </div>
-                <div class="mt-2 btn-primary">
+                <div class="mt-0 btn-primary">
                     <input type="text" name="phone" placeholder="Phone" required>
                 </div>
-                <div class="mt-2">
+                <div class="mt-1 ">
                     <button class="btn btn-block btn-lg btn-primary" type="submit"><span>Make payment</span><i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
